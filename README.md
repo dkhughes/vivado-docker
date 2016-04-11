@@ -14,6 +14,6 @@ Running using your local X server requires the right permissions on the host. On
 
 ```sh
 $ xhost +
-$ ./run_vivado.sh [your image tag here]
+$ ./run_vivado.sh
 ```
-Add the --rm tag to the command line if you want to automatically clean up the container on exit. You should see the Vivado gui pop up. Happy Vivado-ing!
+You should see the Vivado gui pop up. Happy Vivado-ing!

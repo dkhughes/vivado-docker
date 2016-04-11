@@ -1,13 +1,17 @@
 #!/bin/sh
 # These Dockerfiles require docker v1.9 or greater
-
-# The image names you want to use
-MAINTAINER="Devin Hughes <devin@jd2.com>"
-BASE_IMAGE_NAME="dkhughes/jessie-vivado-base:latest"
-XV_IMAGE_NAME="dkhughes/jessie-vivado-2015.4:latest"
+# I invoke docker with sudo to remind me that it's
+# running as root. USR pulls back out the actual invokers
+# user name.
 
 DIR="$PWD"
 USR=`who mom likes | awk '{print $1}'`
+
+# --- Configure Here ---
+MAINTAINER="Devin Hughes <devin@jd2.com>"
+BASE_IMAGE_NAME="dkhughes/jessie-vivado-base:latest"
+XV_IMAGE_NAME="dkhughes/jessie-vivado-2015.4:latest"
+XV_SHARE_PATH=/home/"$USR"/docker-share/vivado
 
 # Populate the docker files with the config
 sed "s|@maintainer@|$MAINTAINER|" \
@@ -38,23 +42,19 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-#XV_IMG_SNAME=`echo $XV_IMAGE_NAME | sed "s|[:].*||"`
-
-# Now it's time to run the license manager
-#docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name vivadoguest $XV_IMG_SNAME
+XV_IMG_SNAME=`echo $XV_IMAGE_NAME | sed "s|[:].*||"`
 
 echo Creating the run script
 cd "$DIR"
 # Create the run script
 cat << EOF > run_vivado.sh
 #!/bin/sh
-
-if [ -z "\$1" ]; then
-	echo "Usage: run_vivado.sh [docker image] [--rm]"
-	exit 1
-fi
-
-docker run -ti -e DISPLAY=\$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \$2 \$1 /opt/Xilinx/Vivado/2015.4/bin/vivado
+# Runs Vivado and cleans up when done.
+docker run --rm -ti -e DISPLAY=\$DISPLAY \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v $XV_SHARE_PATH:/opt/share \
+$XV_IMG_SNAME \
+/opt/Xilinx/Vivado/2015.4/bin/vivado
 
 EOF
 
