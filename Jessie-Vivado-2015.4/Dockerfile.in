@@ -1,0 +1,23 @@
+FROM @jessie-base-image@
+MAINTAINER @maintainer@
+
+# Use a locally downloaded Xilinx installer archive
+ADD Xilinx_Vivado_SDK_Lin_2015.4_1118_2.tar.gz /tmp/
+# Xilinx recommends recreating this config file for every release
+COPY xsetup_config_2015.4.txt 	/tmp/
+
+# Extract the archive so we can get to the contents
+RUN cd /tmp/Xilinx_Vivado_SDK_Lin_2015.4_1118_2 && \
+    sed -i -- 's/uname -i/uname -m/' xsetup && \
+    ./xsetup --batch Install \
+    --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
+    -c /tmp/xsetup_config_2015.4.txt
+
+# Cleanup afterwards
+RUN cd / && \
+    rm -rf /tmp/* && apt-get clean
+
+# Install the license file
+COPY Xilinx.lic /opt/Xilinx
+ENV XILINXD_LICENSE_FILE /opt/Xilinx
+

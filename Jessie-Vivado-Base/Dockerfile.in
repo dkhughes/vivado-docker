@@ -1,0 +1,40 @@
+FROM debian:jessie
+MAINTAINER @maintainer@
+
+ARG b_uid
+ARG b_gid
+
+ENV TERM xterm
+
+# apt config:  silence warnings and set defaults
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN true
+
+# turn off recommends on container OS
+# install required dependencies
+RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
+    /etc/apt/apt.conf.d/01norecommend && \
+    apt-get update && \
+    apt-get -y install \
+        git \
+        libfontconfig1 \
+        libglib2.0-0 \
+	sudo \
+	nano \
+	libxext6 \
+	libxrender1 \
+	libxtst6
+
+# Sharing the x server with docker. See: 
+# http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
+RUN export uid=${b_uid} gid=${b_gid} && \
+	mkdir -p /home/developer && \
+	echo "developer:x:${uid}:${gid}:Developer,,,;/home/developer:/bin/bash" >> /etc/passwd && \
+	echo "developer:x:${uid}:" >> /etc/group && \
+	echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+	chmod 0440 /etc/sudoers.d/developer && \
+    chown ${uid}:${gid} /home/developer   
+
+USER developer
+ENV HOME developer
+
