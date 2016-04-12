@@ -23,8 +23,9 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
 	nano \
 	libxext6 \
 	libxrender1 \
-	libxtst6 && \
-    apt-get clean
+	libxtst6 \
+	unzip && \
+	apt-get clean
 
 # Sharing the x server with docker. See: 
 # http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
