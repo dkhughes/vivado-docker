@@ -24,8 +24,8 @@ sed -e "s|@maintainer@|$MAINTAINER|" \
 
 # Now build the base image
 cd "$DIR"/Jessie-Vivado-Base
-docker build --build-arg b_uid=`id -u` \
-    --build-arg b_gid=`id -g` \
+docker build --build-arg b_uid=`id -u $USR` \
+    --build-arg b_gid=`id -g $USR` \
     -t "$BASE_IMAGE_NAME" .
 
 if [ $? -ne 0 ]; then
@@ -37,7 +37,7 @@ echo Base image built. Building final image...
 cd "$DIR"/Jessie-Vivado-2015.4
 docker build -t "$XV_IMAGE_NAME" .
 
-if [ $? -ne 0 ]; then 
+if [ $? -ne 0 ]; then
   echo ERROR: Failed to build final image.
   exit 1
 fi
@@ -51,8 +51,9 @@ cat << EOF > run_vivado.sh
 #!/bin/sh
 # Runs Vivado and cleans up when done.
 docker run --rm -ti -e DISPLAY=\$DISPLAY \
+--user developer \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v $XV_SHARE_PATH:/opt/share \
+-v $XV_SHARE_PATH:/home/developer \
 $XV_IMG_SNAME \
 /opt/Xilinx/Vivado/2015.4/bin/vivado
 

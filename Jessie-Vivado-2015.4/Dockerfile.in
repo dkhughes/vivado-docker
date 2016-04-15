@@ -11,10 +11,12 @@ ADD http://zedboard.org/sites/default/files/documentations/Avnet%20Zed%20Board%2
 # Extract the archive so we can get to the contents
 RUN cd /tmp/Xilinx_Vivado_SDK_Lin_2015.4_1118_2 && \
     sed -i -- 's/uname -i/uname -m/' xsetup && \
-    ./xsetup --batch Install \
+    sudo ./xsetup --batch Install \
     --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
     -c /tmp/xsetup_config_2015.4.txt && \
     cd /tmp && \
+    sudo chown -R developer:developer /opt && \
+    sudo chown -R developer:developer /tmp && \
     unzip "Avnet Zed Board Definitions 2015_3or4_160331_2.zip" -d avboards && \
     cd /tmp/avboards && \
     unzip "Avnet Zed Boards 2015_3or4_160331.zip" \
@@ -25,4 +27,3 @@ RUN cd /tmp/Xilinx_Vivado_SDK_Lin_2015.4_1118_2 && \
 # Install the license file
 COPY Xilinx.lic /opt/Xilinx
 ENV XILINXD_LICENSE_FILE /opt/Xilinx
-
