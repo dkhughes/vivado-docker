@@ -24,6 +24,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         libxext6 \
         libxrender1 \
         libxtst6 \
+        libgtk2.0-0 \
         build-essential \
         unzip && \
         apt-get clean
