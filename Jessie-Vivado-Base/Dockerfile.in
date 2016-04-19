@@ -24,6 +24,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         libxext6 \
         libxrender1 \
         libxtst6 \
+        build-essential \
         unzip && \
         apt-get clean
 
@@ -39,5 +40,5 @@ RUN export uid=${b_uid} gid=${b_gid} && \
     chown -R ${uid}:${gid} /opt
 
 USER developer
-ENV HOME developer
+ENV HOME /home/developer
 WORKDIR /home/developer
