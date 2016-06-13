@@ -16,6 +16,8 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     /etc/apt/apt.conf.d/01norecommend && \
     apt-get update && \
     apt-get -y install \
+        bzip2 \
+        libc6-i386 \
         git \
         libfontconfig1 \
         libglib2.0-0 \

@@ -52,6 +52,7 @@ cat << EOF > run_vivado.sh
 # Runs Vivado and cleans up when done.
 docker run --rm -ti -e DISPLAY=\$DISPLAY \
 --user developer \
+--privileged -v /dev/bus/usb:/dev/bus/usb \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v $XV_SHARE_PATH:/home/developer \
 $XV_IMG_SNAME \
@@ -64,7 +65,7 @@ cat << EOF > run_terminal.sh
 #!/bin/sh
 # Runs Vivado and cleans up when done.
 docker run --rm -ti -e DISPLAY=\$DISPLAY \
---user developer \
+--user developer --privileged -v /dev/bus/usb:/dev/bus/usb \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v $XV_SHARE_PATH:/home/developer \
 $XV_IMG_SNAME
