@@ -60,7 +60,7 @@ $XV_IMG_SNAME
 EOF
 
 #Fixup file ownership
-chown $USR:$USR run_vivado.sh run_terminal.sh
-chmod +x run_vivado.sh run_terminal.sh
+chown $USR:$USR run_vivado.sh
+chmod +x run_vivado.sh
 
 echo Done.
