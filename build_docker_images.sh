@@ -44,7 +44,7 @@ fi
 
 XV_IMG_SNAME=`echo $XV_IMAGE_NAME | sed "s|[:].*||"`
 
-echo Creating the run scripts
+echo Creating the run script
 cd "$DIR"
 # Create the run vivado script
 cat << EOF > run_vivado.sh
@@ -55,20 +55,7 @@ docker run --rm -ti -e DISPLAY=\$DISPLAY \
 --privileged -v /dev/bus/usb:/dev/bus/usb \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v $XV_SHARE_PATH:/home/developer \
-$XV_IMG_SNAME \
-/opt/Xilinx/Vivado/2015.4/bin/vivado
-
-EOF
-
-# Create the run to terminal script
-cat << EOF > run_terminal.sh
-#!/bin/sh
-# Runs Vivado and cleans up when done.
-docker run --rm -ti -e DISPLAY=\$DISPLAY \
---user developer --privileged -v /dev/bus/usb:/dev/bus/usb \
--v /tmp/.X11-unix:/tmp/.X11-unix \
--v $XV_SHARE_PATH:/home/developer \
-$XV_IMG_SNAME
+$XV_IMG_SNAME 
 
 EOF
 
