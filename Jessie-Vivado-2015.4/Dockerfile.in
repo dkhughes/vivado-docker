@@ -6,7 +6,7 @@ ADD Xilinx_Vivado_SDK_Lin_2015.4_1118_2.tar.gz /tmp/
 # Xilinx recommends recreating this config file for every release
 COPY xsetup_config_2015.4.txt 	/tmp/
 # Get the avnet board definition files also
-ADD http://zedboard.org/sites/default/files/documentations/Avnet%20Zed%20Board%20Definitions%202015_3or4_160331_2.zip /tmp/
+ADD AvnetZedBoards2015_3or4_160404.zip /tmp/
 
 # Extract the archive so we can get to the contents
 RUN cd /tmp/Xilinx_Vivado_SDK_Lin_2015.4_1118_2 && \
@@ -17,9 +17,7 @@ RUN cd /tmp/Xilinx_Vivado_SDK_Lin_2015.4_1118_2 && \
     cd /tmp && \
     sudo chown -R developer:developer /opt && \
     sudo chown -R developer:developer /tmp && \
-    unzip "Avnet Zed Board Definitions 2015_3or4_160331_2.zip" -d avboards && \
-    cd /tmp/avboards && \
-    unzip "Avnet Zed Boards 2015_3or4_160331.zip" \
+    unzip "AvnetZedBoards2015_3or4_160404.zip" \
     -d /opt/Xilinx/Vivado/2015.4/data/boards/board_files/ && \
     cd / && \
     rm -rf /tmp/*

@@ -2,3 +2,4 @@ Dockerfile
 run_vivado.sh
 run_terminal.sh
 run_sdk.sh
+*.zip
